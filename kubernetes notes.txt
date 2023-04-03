@@ -1,0 +1,61 @@
+Kubernetes can upgrade replicas of container until 1000 or more
+Kubernetes used rolling-update, so that you can rollback if something goes wrong
+
+Kubernetes Architecture
+
+1. Kubernetes cluster is a set of node (physical or virtual where kubernetes tools are installed)
+2. Node is a worker machine, where container will be launched
+3. Cluster is a set of nodes grouped together so that if one node fails, the other acts as a backup
+4. Master/Control plane is like a swarm manager in kubernetes, they watch other worker (nodes)
+
+kubectl run hello-minikube => Deploy application in a cluster
+kubectl cluster-info => View info of cluster
+kubectl get nodes => List of all the nodes
+
+A few kubernetes key components
+
+1. Master/Control Plane
+2. Kubelet (tiny apps to communicate with the control plane also interacts with the node and container)
+3. Pod (Container/Containers) => Each get internal IP Address => Abstraction of container
+4. Etcd (key value store to store all your data)
+5. Controller Manager => see health of pods, restarting the pods.
+6. Scheduler => Assign pod to the slaves (see the resource allocation first)
+
+You access kubernetes in the cloud using kubectl
+Copy-paste the API endpoint setup (usually yaml file) and make it the kubeconfig file
+So that you can access master node
+
+Use Deployment file for a more verbose and specific than kubectl run => Abstraction of pods
+kubectl apply -f (file name)
+kubectl get deployments (get deployment file)
+kubectl get pods -o wide (get pods full name, ip address and assigned node)
+
+To expose the pods use service (also act as a load balancer) => Replica is connected to the same service
+Make new service file and kubectl apply -f (file name)
+kubectl describe services (file name) to get description of the service and pods
+To access via browser make external service, for an internal pods used internal service
+Service used IP Address => http://124.89.101.2:8080 => Used ingress so that became this => http://my-app.com
+
+ConfigMap => External links to the configuration of the apps (ex: links to the service like in .env file)
+Secret => Like ConfigMap but for secret data (credentials)
+
+Because data isn't persisted, kubernetes used volumes => attaches physical storage
+|-> hard drive -> maybe in the local (same server node) or remote to the pods
+
+StatefulSet for a stateful apps. (ex: database) because db is complex using physical storage
+Because it is hard for making statefulSet, common practice is host db outside k8s cluster
+
+Kube Proxy => important to have in slave nodes for forwarding request from service to the replicas
+
+Master node components
+
+1. API Server => cluster getaway, auth for the master
+2. Scheduler
+3. Etcd
+4. Controller manager
+
+Worker components
+
+1. Container runtime (ex: Docker)
+2. Kubelet
+3. Kube Proxy

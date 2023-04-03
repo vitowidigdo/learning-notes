@@ -1,0 +1,40 @@
+Create a volume folder using docker volume create (data_volume)
+Docker run -v to Volume Mapping, Persisting Data to a assigned folder in the host
+docker run -v data_volume:/var/lib/mysql mysql --> Example
+Use docker --mount for more verbose (type, source, and location of the volume)
+
+Docker used Layered Architecture
+So that if the instructions on Dockerfile is failed on step 4, it's just rolling up to steps before.
+It's also happen if you update the Dockerfile.
+
+Docker Copy-On-Write Mechanism, so you write files/code from Image Layer and then copy it to Container Layer (Temporary)
+This is done because image layer is read only, and you edit file through the container layer
+
+Use docker network create to create a new network, and you specify driver and subnet
+
+Docker daemon is a background process that manages docker objects such as containers, images, etc.
+REST API so that docker CLI can connect to Docker daemon
+
+docker run --cpus=.5 (so that resource CPU not over 50% of our CPU)
+docker run --memory=100m (so that resource memory not over 100 mb)
+
+Two types of container on windows
+
+1. the same kernel host
+2. Different kernel host of Different container. => More isolated
+
+Container orchestration is a set of tools and scripts to maintain a lot of container (Typically multiple docker hosts)
+List of orchestration
+
+1. Docker swarm (from Docker)
+2. Kubernetes (from Google)
+3. MESOS (from Apache)
+
+Docker swarm needs to have multiple hosts, 1 as a swarm manager the other as slaves or workers.
+docker swarm --init on swarm manager, and docker swarm join -token on slaves
+docker service create --replicas=3 (image-name) (run in the swarm managers)
+
+Difference of Docker Compose, Docker Swarm, Kubernetes
+1. Docker Compose => Multiple containers on the same host
+2. Kubernetes supports monitoring, security features, high availability, and flexibility
+3. Docker Swarm => Easy to learn multiple containers on different hosts. But tied to docker API
